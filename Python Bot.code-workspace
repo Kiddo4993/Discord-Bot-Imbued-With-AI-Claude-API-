@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "Python Bot",
+			"path": "."
+		},
+		{
+			"name": "sup",
+			"path": "../sup"
+		},
+		{
+			"name": "BOTS",
+			"path": "../BOTS"
+		}
+	],
+	"settings": {}
+}
