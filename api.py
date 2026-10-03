@@ -34,7 +34,9 @@ async def chat(message: Message):
         incoming_discord_message=discord_message
     )
 
-    async def generate():
+    # A plain (sync) generator: client.stream() blocks, and FastAPI runs sync
+    # generators in a worker thread instead of stalling the event loop.
+    def generate():
         response = ""
         
         for event in client.stream(
@@ -56,4 +58,6 @@ async def chat(message: Message):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=6700)
+    # 127.0.0.1: only the bot on this computer needs this API (0.0.0.0 let anyone
+    # on the network use your Replicate credit).
+    uvicorn.run(app, host="127.0.0.1", port=6700)
