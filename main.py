@@ -5,10 +5,9 @@ from dotenv import load_dotenv
 import os
 import aiohttp  # Changed from requests to aiohttp for async support
 import asyncio
-import asyncio
+from moderation import contains_banned_word
 
-# ----------------- SWEAR WORD FILTER -----------------
-list1 = ['shit', 'fuck', 'cum', 'dick', 'ass', 'cock', 'bitch']
+# ----------------- SWEAR WORD FILTER (word list in moderation.py) -----------------
 secret_role = "Regal Daddy"
 
 # ----------------- LOAD TOKENS -----------------
@@ -55,11 +54,10 @@ async def on_member_remove(member):
 async def on_message(message):
     if message.author == bot.user:
         return
-    for word in list1:
-        if word in message.content.lower():
-            await message.delete()
-            await message.channel.send(f"{message.author.mention}, never say that - it is derogatory")
-            return
+    if contains_banned_word(message.content):
+        await message.delete()
+        await message.channel.send(f"{message.author.mention}, never say that - it is derogatory")
+        return
     await bot.process_commands(message)
 
 # ----------------- BOT COMMANDS -----------------
